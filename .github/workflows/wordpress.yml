@@ -21,7 +21,7 @@ jobs:
         run: |
           az group create --name BrainStromResourceGroup --location SouthIndia
           az vm create \
-            --resource-group WordPressResourceGroup \
+            --resource-group BrainStromResourceGroup \
             --name WordPressVM \
             --image Ubuntu2204 \
             --admin-username azureuser \
@@ -30,8 +30,8 @@ jobs:
 
       - name: Open necessary ports
         run: |
-          az vm open-port --resource-group WordPressResourceGroup --name WordPressVM --port 80 --priority 1000
-          az vm open-port --resource-group WordPressResourceGroup --name WordPressVM --port 443 --priority 1001
+          az vm open-port --resource-group BrainStromResourceGroup --name WordPressVM --port 80 --priority 1000
+          az vm open-port --resource-group BrainStromResourceGroup --name WordPressVM --port 443 --priority 1001
 
   configure:
     needs: provision
