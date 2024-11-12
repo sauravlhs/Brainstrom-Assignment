@@ -28,19 +28,6 @@ jobs:
             --generate-ssh-keys \
             --size Standard_B1s
 
-      - name: Save SSH private key as artifact
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/.ssh
-          cp /home/runner/.ssh/id_rsa $GITHUB_WORKSPACE/.ssh/id_rsa
-          cp /home/runner/.ssh/id_rsa.pub $GITHUB_WORKSPACE/.ssh/id_rsa.pub
-        continue-on-error: true
-
-      - name: Upload SSH private key to artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ssh-keys
-          path: $GITHUB_WORKSPACE/.ssh
-
       - name: Open necessary ports
         run: |
           az vm open-port --resource-group BrainStromResourceGroup --name WordPressVM --port 80 --priority 1000
