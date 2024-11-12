@@ -19,11 +19,11 @@ jobs:
 
       - name: Create Azure VM
         run: |
-          az group create --name WordPressResourceGroup --location eastus
+          az group create --name WordPressResourceGroup --location SouthIndia
           az vm create \
             --resource-group WordPressResourceGroup \
             --name WordPressVM \
-            --image UbuntuLTS \
+            --image Ubuntu2204 \
             --admin-username azureuser \
             --generate-ssh-keys \
             --size Standard_B1s
