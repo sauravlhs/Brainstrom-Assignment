@@ -19,7 +19,7 @@ jobs:
 
       - name: Create Azure VM
         run: |
-          az group create --name WordPressResourceGroup --location SouthIndia
+          az group create --name WordPressResourceGroup --location South India
           az vm create \
             --resource-group WordPressResourceGroup \
             --name WordPressVM \
