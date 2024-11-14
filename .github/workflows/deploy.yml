@@ -3,12 +3,11 @@ name: Deploy WordPress to VPS
 on:
   push:
     branches:
-      - main                                                                  # Only trigger on push to main branch
-#
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+      - main  # Only trigger on push to main branch
 
+jobs:
+  install_and_build:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -16,8 +15,8 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'  
-          extensions: fpm,mysql,curl,xml,zip,gd,mbstring                      # Installing necessary PHP extensions
+          php-version: '8.1'
+          extensions: fpm,mysql,curl,xml,zip,gd,mbstring  # Installing necessary PHP extensions
 
       - name: Install Composer dependencies
         run: |
@@ -25,17 +24,33 @@ jobs:
             composer install --no-interaction --prefer-dist --optimize-autoloader
           fi
 
+      - name: Build the project (if applicable)
+        run: |
+          # Add any build steps here, e.g., building assets or compiling code.
+          echo "Building the project..."
+
+  deploy_files:
+    needs: install_and_build  # Ensure this job runs after the install_and_build job completes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
-      - name: Deploy WordPress to VPS
+      - name: Transfer files to VPS
         run: |
           rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
             ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_PATH }}
 
+  deploy_server:
+    needs: deploy_files  # Ensure this job runs after the deploy_files job completes
+    runs-on: ubuntu-latest
+    steps:
       - name: Restart Nginx and PHP-FPM on VPS
         env:
           VPS_USER: ${{ secrets.VPS_USER }}
