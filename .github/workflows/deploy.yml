@@ -51,6 +51,16 @@ jobs:
     needs: deploy_files  # Ensure this job runs after the deploy_files job completes
     runs-on: ubuntu-latest
     steps:
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/new_key
+          chmod 600 ~/.ssh/new_key
+
+      - name: Test SSH Connection
+        run: |
+          ssh -i ~/.ssh/new_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST
+
       - name: Restart Nginx and PHP-FPM on VPS
         env:
           VPS_USER: ${{ secrets.VPS_USER }}
