@@ -47,7 +47,7 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_PATH }}
 
-  deploy_server:
+  deploy_server:         #
     needs: deploy_files  # Ensure this job runs after the deploy_files job completes
     runs-on: ubuntu-latest
     steps:
