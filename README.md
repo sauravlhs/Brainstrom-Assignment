@@ -142,7 +142,7 @@ sudo ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
-After this step, we can see the wordpress site being loaded in our hostname
+After this step, we can see the wordpress site being loaded in the hostname we created
 
 ![Wordpress site](image-1.png)
 
@@ -157,6 +157,7 @@ sudo certbot --nginx -d noip_hostname
 ```
 
 After this we can see the SSL is added in our hostname
+
 ![SSL image](image-2.png)
 
 **8. Now we will configure NO-IP in the server to automatically update the IP changes**
