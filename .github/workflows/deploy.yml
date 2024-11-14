@@ -32,7 +32,7 @@ jobs:
 
       - name: Deploy WordPress to VPS
         run: |
-          sudo rsync -avz --delete \
+          rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
             ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_PATH }}
 
