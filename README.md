@@ -174,5 +174,31 @@ sudo make
 sudo make install
 ```
 
+**Now we will enable caching**
+
+- To enable micro caching, we can enable it using below command
+```bash
+proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=microcache:10m max_size=100m;
+proxy_cache_key "$scheme$request_method$host$request_uri";
+
+location / {
+    proxy_cache microcache;
+    proxy_cache_valid 200 1s;
+    proxy_cache_valid any 1s;
+    add_header X-Proxy-Cache $upstream_cache_status;
+}
+```
+**Gzip compression**
+
+To enable gzip compression, we can it it up as below
+```bash
+gzip on;
+gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+gzip_min_length 256;
+gzip_vary on;
+gzip_proxied any;
+gzip_comp_level 5;
+```
+
 
 
